@@ -12,7 +12,7 @@
 
 <p align="center">
 
-The project is an email dispatcher that is one of the pieces of the authentication microservice that can be seen [here] (https://github.com/aawadallak/Account-management-service),
+The project is an email dispatcher that is one of the pieces of the authentication microservice that can be seen [here](https://github.com/aawadallak/Account-management-service),
 the main idea was to connect the micro services using a messaging technology with Apache Kafka, currently the service is consuming a topic and based on information
 from the header, it sends a template email template to the user, which can be a welcome code confirmation, email change, or password change.
 </p>
