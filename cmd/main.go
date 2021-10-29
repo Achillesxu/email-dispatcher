@@ -1,8 +1,8 @@
 package main
 
 import (
-	"latest/app/kafka"
 	"latest/config"
+	"latest/usecases/kafka"
 	"log"
 )
 

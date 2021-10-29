@@ -7,33 +7,6 @@ import (
 	"gopkg.in/gomail.v2"
 )
 
-type MailService struct {
-	smtp     string
-	user     string
-	password string
-	port     uint
-}
-
-type MailServiceMessage struct {
-	From    string
-	To      string
-	Subject string
-	Body    string
-}
-
-func (c *MailService) GetMailInstance() *gomail.Dialer {
-	return gomail.NewDialer(c.smtp, int(c.port), c.user, c.password)
-}
-
-func NewMailService() *MailService {
-	return &MailService{
-		smtp:     config.GetConfig().MailSmtp,
-		user:     config.GetConfig().MailUser,
-		password: config.GetConfig().MailPassword,
-		port:     config.GetConfig().MailPort,
-	}
-}
-
 func CodeMessage(d dto.KafkaResponse) *gomail.Message {
 
 	str := codeTemplateHTML(d.Code)
@@ -61,8 +34,6 @@ func ChangeEmailMessage(d dto.KafkaResponse) *gomail.Message {
 }
 
 func LostPassMessage(d dto.KafkaResponse) *gomail.Message {
-
-	str := lostPasswordTemplateHTML(d.Password)
 
 	y := gomail.NewMessage()
 	y.SetHeader("From", config.GetConfig().MailUser)

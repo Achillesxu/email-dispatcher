@@ -46,9 +46,7 @@ func (k *kafkaConsumer) Consumer() (string, error) {
 			continue
 
 		}
-
 		log.Println("Email was sent")
-
 	}
 }
 
