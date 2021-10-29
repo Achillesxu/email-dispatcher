@@ -1,4 +1,4 @@
-package services
+package usescases
 
 import (
 	"fmt"
@@ -7,10 +7,13 @@ import (
 	"log"
 )
 
-type Dispatcher struct {
+type Dispatcher struct{}
+
+func NewEmailDispatcher() Usecases {
+	return &Dispatcher{}
 }
 
-func (c *Dispatcher) Send(dto dto.KafkaResponse, header string) error {
+func (d *Dispatcher) Send(dto dto.KafkaResponse, header string) error {
 
 	service := dispatcher.NewMailService()
 
