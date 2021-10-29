@@ -3,9 +3,37 @@ package dispatcher
 import (
 	"latest/config"
 	"latest/dto"
+	"log"
 
 	"gopkg.in/gomail.v2"
 )
+
+type MailService struct {
+	smtp     string
+	user     string
+	password string
+	port     uint
+}
+
+type MailServiceMessage struct {
+	From    string
+	To      string
+	Subject string
+	Body    string
+}
+
+func (c *MailService) GetMailInstance() *gomail.Dialer {
+	return gomail.NewDialer(c.smtp, int(c.port), c.user, c.password)
+}
+
+func NewMailService() *MailService {
+	return &MailService{
+		smtp:     config.GetConfig().MailSmtp,
+		user:     config.GetConfig().MailUser,
+		password: config.GetConfig().MailPassword,
+		port:     config.GetConfig().MailPort,
+	}
+}
 
 func CodeMessage(d dto.KafkaResponse) *gomail.Message {
 
@@ -20,7 +48,7 @@ func CodeMessage(d dto.KafkaResponse) *gomail.Message {
 	return y
 }
 
-func ChangeEmailMessage(d dto.KafkaResponse) *gomail.Message {
+func ChangeEmailMessage(d dto.KafkaResponse) error {
 
 	str := newEmailTemplateHTML(d.Code)
 
@@ -29,6 +57,11 @@ func ChangeEmailMessage(d dto.KafkaResponse) *gomail.Message {
 	y.SetHeader("To", d.Email)
 	y.SetHeader("Subject", "Confirm new email - Go service")
 	y.SetBody("text/html", str)
+
+	if err := mail.DialAndSend(m); err != nil {
+		log.Println(err)
+		return err
+	}
 
 	return y
 }

@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"latest/config"
 	"latest/domain"
+	"log"
 
 	"gopkg.in/gomail.v2"
 )
@@ -17,12 +17,17 @@ func NewMailRepository(mail *domain.Mail) MailRepository {
 	}
 }
 
-func (m MailRepository) SendMessage() *gomail.Message {
+func (m MailRepository) SendMessage(e domain.Message) error {
 	y := gomail.NewMessage()
-	y.SetHeader("From", config.GetConfig().MailUser)
-	y.SetHeader("To", d.Email)
-	y.SetHeader("Subject", "Greetings from us - Go service")
-	y.SetBody("text/html", str)
+	y.SetHeader("From")
+	y.SetHeader("To")
+	y.SetHeader("Subject", "")
+	y.SetBody("text/html", "")
 
-	return y
+	if err := m.Dialer.DialAndSend(y); err != nil {
+		log.Println(err)
+		return err
+	}
+
+	return nil
 }
