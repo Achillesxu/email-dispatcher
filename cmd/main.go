@@ -3,15 +3,13 @@ package main
 import (
 	"latest/app"
 	"latest/config"
-	"log"
 )
 
 func main() {
 
 	config.Init()
-
-	log.Println("Started...")
-	log.Println(config.GetConfig().Topic)
+	config.InitLogger()
+	config.Logger().Info("Starting service")
 
 	app.Start()
 }
