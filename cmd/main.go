@@ -1,6 +1,7 @@
 package main
 
 import (
+	"latest/app"
 	"latest/config"
 	"log"
 )
@@ -12,4 +13,5 @@ func main() {
 	log.Println("Started...")
 	log.Println(config.GetConfig().Topic)
 
+	app.Start()
 }

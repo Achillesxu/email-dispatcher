@@ -1,7 +1,7 @@
-package mail
+package consumer
 
 import "latest/domain/message"
 
 type Repository interface {
-	SendMessage(e message.Message) error
+	Consumer() (*message.Message, error)
 }

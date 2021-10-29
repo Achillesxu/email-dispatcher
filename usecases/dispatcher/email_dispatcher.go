@@ -1,16 +1,37 @@
-package usescases
+package dispatcher
 
 import (
-	"latest/dto"
+	"latest/domain/consumer"
+	"latest/domain/mail"
 )
 
-type Dispatcher struct{}
-
-func NewEmailDispatcher() Usecases {
-	return &Dispatcher{}
+type Dispatcher struct {
+	mail     mail.Repository
+	consumer consumer.Repository
 }
 
-func (d *Dispatcher) Send(dto dto.KafkaResponse, header string) error {
+func NewEmailDispatcher(mail mail.Repository, consumer consumer.Repository) Usecases {
+	return &Dispatcher{
+		mail:     mail,
+		consumer: consumer,
+	}
+}
 
-	return nil
+func (d *Dispatcher) Dispatch() {
+	for {
+
+		msg, err := d.consumer.Consumer()
+
+		if err != nil {
+			continue
+		}
+
+		err = d.mail.SendMessage(*msg)
+
+		if err != nil {
+			continue
+		}
+
+	}
+
 }

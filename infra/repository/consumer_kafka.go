@@ -10,12 +10,12 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-type kafkaConsumer struct {
+type KafkaConsumer struct {
 	reader *kafka.Reader
 }
 
-func NewKafkaConsumer() *kafkaConsumer {
-	return &kafkaConsumer{
+func NewKafkaConsumer() *KafkaConsumer {
+	return &KafkaConsumer{
 		reader: kafka.NewReader(kafka.ReaderConfig{
 			Brokers: []string{config.GetConfig().Brokers},
 			GroupID: config.GetConfig().Topic,
@@ -23,7 +23,7 @@ func NewKafkaConsumer() *kafkaConsumer {
 	}
 }
 
-func (k *kafkaConsumer) Consumer() (*domain.Message, error) {
+func (k *KafkaConsumer) Consumer() (*domain.Message, error) {
 
 	ctx := context.Background()
 
