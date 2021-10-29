@@ -1,19 +1,15 @@
 package main
 
 import (
-	"latest/app/kafka"
+	"latest/app"
 	"latest/config"
-	"log"
 )
 
 func main() {
 
 	config.Init()
+	config.InitLogger()
+	config.Logger().Info("Starting service")
 
-	log.Println("Started...")
-	log.Println(config.GetConfig().Topic)
-
-	kafka := kafka.NewKafkaConsumer()
-
-	kafka.Consumer()
+	app.Start()
 }
