@@ -20,10 +20,10 @@ func NewMailRepository(mail *mail.Mail) MailRepository {
 
 func (m MailRepository) SendMessage(e message.Message) error {
 	y := gomail.NewMessage()
-	y.SetHeader("From")
-	y.SetHeader("To")
-	y.SetHeader("Subject", "")
-	y.SetBody("text/html", "")
+	y.SetHeader("From", e.From())
+	y.SetHeader("To", e.To())
+	y.SetHeader("Subject", e.Subject())
+	y.SetBody("text/html", e.Body())
 
 	if err := m.Dialer.DialAndSend(y); err != nil {
 		log.Println(err)

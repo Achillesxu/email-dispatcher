@@ -16,9 +16,10 @@ func Start() {
 		config.GetConfig().MailPort,
 	)
 
-	consumer := repository.NewKafkaConsumer()
+	consumer := repository.NewConsumer()
 	mail := repository.NewMailRepository(setup)
 
 	svc := dispatcher.NewEmailDispatcher(mail, consumer)
+
 	svc.Dispatch()
 }
