@@ -4,9 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"latest/config"
+	domain "latest/domain/message"
 	"latest/dto"
-	"latest/services"
-	"log"
 
 	"github.com/segmentio/kafka-go"
 )
@@ -24,36 +23,25 @@ func NewKafkaConsumer() *kafkaConsumer {
 	}
 }
 
-func (k *kafkaConsumer) Consumer() (string, error) {
+func (k *kafkaConsumer) Consumer() (*domain.Message, error) {
 
 	ctx := context.Background()
 
 	dto := dto.KafkaResponse{}
 
-	for {
+	message, err := k.reader.ReadMessage(ctx)
 
-		message, err := k.reader.ReadMessage(ctx)
-
-		if err != nil {
-			continue
-		}
-
-		header := message.Headers[0].Key
-
-		err = json.Unmarshal(message.Value, &dto)
-
-		if err != nil {
-			continue
-		}
-
-		service := services.Dispatcher{}
-
-		err = service.Send(dto, header)
-
-		if err != nil {
-			log.Println(err)
-			continue
-
-		}
+	if err != nil {
+		return nil, err
 	}
+
+	err = json.Unmarshal(message.Value, &dto)
+
+	if err != nil {
+		return nil, err
+	}
+
+	dmn := domain.NewMessage(config.GetConfig().MailUser, dto.To, dto.Subject, dto.Template)
+
+	return &dmn, nil
 }

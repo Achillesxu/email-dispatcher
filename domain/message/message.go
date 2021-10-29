@@ -1,4 +1,4 @@
-package domain
+package message
 
 type Message struct {
 	from    string

@@ -1,4 +1,4 @@
-package domain
+package mail
 
 type Mail struct {
 	smtp     string

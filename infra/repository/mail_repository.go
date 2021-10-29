@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"latest/domain"
+	"latest/domain/mail"
+	"latest/domain/message"
 	"log"
 
 	"gopkg.in/gomail.v2"
@@ -11,13 +12,13 @@ type MailRepository struct {
 	*gomail.Dialer
 }
 
-func NewMailRepository(mail *domain.Mail) MailRepository {
+func NewMailRepository(mail *mail.Mail) MailRepository {
 	return MailRepository{
 		Dialer: gomail.NewDialer(mail.Smtp(), int(mail.Port()), mail.User(), mail.Password()),
 	}
 }
 
-func (m MailRepository) SendMessage(e domain.Message) error {
+func (m MailRepository) SendMessage(e message.Message) error {
 	y := gomail.NewMessage()
 	y.SetHeader("From")
 	y.SetHeader("To")
